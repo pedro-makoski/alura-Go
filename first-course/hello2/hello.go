@@ -16,7 +16,19 @@ func main() {
 	fmt.Println("0 - sair do programa")
 
 	var comando int 
+	fmt.Print("Insira o comando: ")
 	fmt.Scan(&comando)
 
 	fmt.Println("O comando escolhido foi:", comando)
+
+	switch comando {
+		case 1:	
+			fmt.Println("Monitorando...")
+		case 2, 7:
+			fmt.Println("Exibindo logs...")
+		case 0:
+			fmt.Println("Saindo do programa")
+		default:
+			fmt.Println("Não conheço este comando")
+	}
 }
