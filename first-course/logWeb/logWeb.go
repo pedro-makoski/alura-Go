@@ -7,6 +7,7 @@ import (
 )
 
 func main() {
+	exibeNomes()
 	exibeIntroducao()
 
 	for {
@@ -55,8 +56,11 @@ func getComando() int {
 }
 
 func iniciarMonitoramento() {
+	sites := []string{"https://httpbin.org/status/200","https://www.alura.com.br","https://www.caelo.com.br"}
+
+	fmt.Println(sites)
+	site := sites[0]
 	fmt.Println("Monitorando...")
-	site := "https://httpbin.org/status/200"
 	resposta, _ := http.Get(site)
 	
 	if resposta.StatusCode == 200 {
@@ -64,4 +68,13 @@ func iniciarMonitoramento() {
 	} else {
 		fmt.Println("Site:", site, "está com problemas. Status code:", resposta.StatusCode)
 	}
+}
+
+func exibeNomes() {
+	nomes := []string{"Pedro", "Nivaldo", "Lucas", "Leonardo"}
+	fmt.Println(nomes)
+	fmt.Println(len(nomes), cap(nomes))
+
+	nomes = append(nomes, "Pedro", "Nivaldo", "Lucas", "Leonardo", "aparecida")
+	fmt.Println(len(nomes), cap(nomes))
 }
