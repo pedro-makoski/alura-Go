@@ -4,10 +4,13 @@ import (
 	"fmt"
 	"os"
 	"net/http"
+	"time"
 )
 
+const MONITORAMENTOS = 10 
+const DELAY_IN_MINUTES = 5
+
 func main() {
-	exibeNomes()
 	exibeIntroducao()
 
 	for {
@@ -56,25 +59,30 @@ func getComando() int {
 }
 
 func iniciarMonitoramento() {
-	sites := []string{"https://httpbin.org/status/200","https://www.alura.com.br","https://www.caelo.com.br"}
-
-	fmt.Println(sites)
-	site := sites[0]
+	sites := []string{"https://httpbin.org/status/200","https://www.alura.com.br","https://www.caelum.com.br", "https://httpbin.org/status/404"}
 	fmt.Println("Monitorando...")
-	resposta, _ := http.Get(site)
+
+	for i:=0; i < MONITORAMENTOS; i++ {
+		for i, site := range sites {
+			fmt.Println("Testando site", i, ":", site)
+			testSite(site)
+			fmt.Println("")
+		}
+
+		time.Sleep(DELAY_IN_MINUTES * time.Minute)
+	}
+}
+
+func testSite(site string) {
+	resposta, err := http.Get(site)
 	
+	if err != nil {
+		return 
+	}
+
 	if resposta.StatusCode == 200 {
 		fmt.Println("Site:", site, "foi carregado com sucesso!")
 	} else {
 		fmt.Println("Site:", site, "está com problemas. Status code:", resposta.StatusCode)
 	}
-}
-
-func exibeNomes() {
-	nomes := []string{"Pedro", "Nivaldo", "Lucas", "Leonardo"}
-	fmt.Println(nomes)
-	fmt.Println(len(nomes), cap(nomes))
-
-	nomes = append(nomes, "Pedro", "Nivaldo", "Lucas", "Leonardo", "aparecida")
-	fmt.Println(len(nomes), cap(nomes))
-}
+} 
