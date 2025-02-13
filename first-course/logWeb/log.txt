@@ -3,3 +3,8 @@
 13/02/2025 18:45:38 - https://www.caelum.com.br- online:true
 13/02/2025 18:45:38 - https://httpbin.org/status/404- online:false
 13/02/2025 18:45:38 - https://www.google.com/- online:true
+13/02/2025 18:50:39 - https://httpbin.org/status/200- online:true
+13/02/2025 18:50:40 - https://www.alura.com.br- online:true
+13/02/2025 18:50:40 - https://www.caelum.com.br- online:true
+13/02/2025 18:50:41 - https://httpbin.org/status/404- online:false
+13/02/2025 18:50:41 - https://www.google.com/- online:true
