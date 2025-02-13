@@ -8,6 +8,7 @@ import (
 	"os"
 	"strings"
 	"time"
+	"strconv"
 )
 
 const MONITORAMENTOS = 10
@@ -25,7 +26,7 @@ func main() {
 			case 1:	
 				iniciarMonitoramento()
 			case 2:
-				fmt.Println("Exibindo logs...")
+				imprimeLogs()
 			case 0:
 				fmt.Println("Saindo do programa")
 				os.Exit(0)
@@ -63,7 +64,6 @@ func getComando() int {
 
 func iniciarMonitoramento() {
 	sites := lerSitesDoArquivo()
-	fmt.Println(sites)
 	fmt.Println("Monitorando...")
 
 	for i:=0; i < MONITORAMENTOS; i++ {
@@ -73,7 +73,7 @@ func iniciarMonitoramento() {
 			fmt.Println("")
 		}
 
-		time.Sleep(DELAY_IN_MINUTES * time.Second)
+		time.Sleep(DELAY_IN_MINUTES * time.Minute)
 	}
 }
 
@@ -90,6 +90,8 @@ func testSite(site string) {
 	} else {
 		fmt.Println("Site:", site, "está com problemas. Status code:", resposta.StatusCode)
 	}
+
+	registrarLog(site, resposta.StatusCode == 200)
 } 
 
 func lerSitesDoArquivo() []string {
@@ -120,4 +122,32 @@ func lerSitesDoArquivo() []string {
 	}
 
 	return sites
+}
+
+func registrarLog(site string, status bool) {
+	arquivo, err := os.OpenFile("log.txt", os.O_RDWR|os.O_CREATE|os.O_APPEND, 0666)
+	defer arquivo.Close()
+	if err != nil {
+		fmt.Println("Ocorreu o erro", err)
+		return
+	}
+
+	_, err = arquivo.WriteString(time.Now().Format("02/01/2006 15:04:05") + " - " + site + "- online:" + strconv.FormatBool(status) + "\n")
+	if err != nil {
+		fmt.Println("Ocorreu o erro", err)
+		return
+	}
+}
+
+func imprimeLogs() {
+	fmt.Println("Exibindo logs...")
+
+	arquivo, err := os.ReadFile("log.txt")
+	if err != nil {
+		fmt.Println("Ocorreu o erro", err)
+		return
+	}
+
+	fmt.Println(string(arquivo))
+	
 }
