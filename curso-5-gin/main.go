@@ -1,18 +1,14 @@
 package main
 
 import (
-	"github.com/gin-gonic/gin"
+	"github.com/pedro-makoski/alura-Go/curso-5-gin/models"
+	"github.com/pedro-makoski/alura-Go/curso-5-gin/routes"
 )
 
 func main() {
-	r := gin.Default()
-	r.GET("/alunos", ExibeTodosOsAlunos)
-	r.Run(":5000")
-}
-
-func ExibeTodosOsAlunos(c *gin.Context) {
-	c.JSON(200, gin.H{
-		"id":   1,
-		"nome": "Pedro Makoski",
-	})
+	models.Alunos = []models.Aluno{
+		{"Pedro Makoski", "00000000000", "4700000000"},
+		{"Iksokam Ordep", "1234578912", "4300000000"},
+	}
+	routes.HandleRequests()
 }
