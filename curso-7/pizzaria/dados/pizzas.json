@@ -1,0 +1,27 @@
+[
+   {
+     "id": 1,
+     "nome": "Marguerita",
+     "preco": 30
+   },
+   {
+     "id": 2,
+     "nome": "Toscana",
+     "preco": 30
+   },
+   {
+     "id": 3,
+     "nome": "Atum Com Quiejo",
+     "preco": 29.1
+   },
+   {
+     "id": 4,
+     "nome": "Calabresa",
+     "preco": 21.2
+   },
+   {
+     "id": 5,
+     "nome": "Banana com Queijo",
+     "preco": 21.2
+   }
+ ]

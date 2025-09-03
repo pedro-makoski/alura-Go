@@ -1,32 +1,19 @@
 package main
 
 import (
+	"encoding/json"
 	"fmt"
+	"os"
 	"pizzaria/models"
 	"strconv"
 
 	"github.com/gin-gonic/gin"
 )
 
-var pizzas = []models.Pizza{
-	{
-		ID:    1,
-		Nome:  "Marguerita",
-		Preco: 30,
-	},
-	{
-		ID:    2,
-		Nome:  "Toscana",
-		Preco: 30,
-	},
-	{
-		ID:    3,
-		Nome:  "Atum Com Quiejo",
-		Preco: 29.1,
-	},
-}
+var pizzas = []models.Pizza{}
 
 func main() {
+	LoadPizzas()
 	router := gin.Default()
 
 	router.GET("/pizzas", GetPizzas)
@@ -36,6 +23,35 @@ func main() {
 
 	fmt.Println(pizzas)
 	router.Run(":8000")
+}
+
+func LoadPizzas() {
+	file, err := os.Open("dados/pizzas.json")
+	if err != nil {
+		fmt.Println("Erro ao abrir o arquivo de pizzas.json")
+		return
+	}
+	defer file.Close()
+	decoder := json.NewDecoder(file)
+	if err := decoder.Decode(&pizzas); err != nil {
+		fmt.Println("Erro ao dessirealizar o JSON")
+		return
+	}
+}
+
+func SavePizza() {
+	file, err := os.Create("dados/pizzas.json")
+	if err != nil {
+		fmt.Println("Erro ao abrir o arquivo de pizzas.json")
+		return
+	}
+	defer file.Close()
+
+	encoder := json.NewEncoder(file)
+	encoder.SetIndent(" ", "  ")
+	if err := encoder.Encode(pizzas); err != nil {
+		fmt.Println("Error encoding JSON: ", err.Error())
+	}
 }
 
 func GetPizzas(c *gin.Context) {
@@ -73,7 +89,10 @@ func PostPizzas(c *gin.Context) {
 		return
 	}
 
+	newPizza.ID = len(pizzas) + 1
+
 	pizzas = append(pizzas, newPizza)
+	SavePizza()
 	c.JSON(202, gin.H{
 		"item-criado": newPizza,
 		"foi-criado":  true,
