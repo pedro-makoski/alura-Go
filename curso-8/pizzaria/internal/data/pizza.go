@@ -64,6 +64,12 @@ func UpdatePizza(idx int, newPizza models.Pizza, id int) error {
 		return err
 	}
 
+	for _, review := range newPizza.Reviews {
+		if err := service.ValidateRatingReview(review); err != nil {
+			return err
+		}
+	}
+
 	pizzas[idx] = newPizza
 	pizzas[idx].ID = id
 	SavePizza()
